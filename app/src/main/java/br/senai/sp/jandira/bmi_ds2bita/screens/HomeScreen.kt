@@ -1,5 +1,6 @@
 package br.senai.sp.jandira.bmi_ds2bita.screens
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -9,8 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -21,7 +20,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -31,7 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -40,14 +38,27 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import br.senai.sp.jandira.bmi_ds2bita.R
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(controleDeNavegacao: NavHostController?) {
 
     var nomeState = remember {
         mutableStateOf(value = "")
     }
+
+    // Obtendo o contexto da tela atual
+    val context = LocalContext.current
+
+    // Abrir ou criar um arquivo SharedPreferences
+    val userFile = context
+        .getSharedPreferences(
+            "user_file", Context.MODE_PRIVATE
+        )
+
+    // Criamos um editor responsável por editar o arquivo
+    val editor = userFile.edit()
 
     Box(
         modifier = Modifier
@@ -140,7 +151,12 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                         )
                     }
                     Button(
-                        onClick = {},
+                        onClick = {
+                            editor.putString("user_name", nomeState.value)
+                            editor.putString("user_city", "Jandira")
+                            editor.apply()
+                            controleDeNavegacao?.navigate("user_data")
+                        },
                         shape = RoundedCornerShape(10.dp)
                     ) {
                         Text(
@@ -161,5 +177,5 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 @Preview(showSystemUi = true)
 @Composable
 private fun HomeScreenPreview() {
-    HomeScreen()
+    HomeScreen(null)
 }
