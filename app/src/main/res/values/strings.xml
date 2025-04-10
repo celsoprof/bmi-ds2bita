@@ -13,4 +13,12 @@
     <string name="calculate">Calculate</string>
     <string name="your_result">Your BMI Result</string>
     <string name="new_calculate">New calculate</string>
+
+    <string name="under_weight">You are below your ideal weight</string>
+    <string name="normal_weight">You are normal body weight</string>
+    <string name="over_weight">You are slightly overweight</string>
+    <string name="class1_weight">You have Class I obesity</string>
+    <string name="class2_weight">You have Class II obesity</string>
+    <string name="class3_weight">You have Class III obesity</string>
+
 </resources>

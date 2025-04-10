@@ -34,6 +34,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import br.senai.sp.jandira.bmi_ds2bita.R
+import br.senai.sp.jandira.bmi_ds2bita.model.bmiCalculator
+import br.senai.sp.jandira.bmi_ds2bita.screens.components.BmiLevels
+import java.util.Locale
 
 @Composable
 fun BMIResultScreen(controleDeNavegacao: NavHostController?) {
@@ -48,6 +51,8 @@ fun BMIResultScreen(controleDeNavegacao: NavHostController?) {
     val userAge = userFile.getInt("user_age", 0)
     val userWeight = userFile.getInt("user_weight", 0)
     val userHeight = userFile.getInt("user_height", 0)
+
+    val resultBmi = bmiCalculator(userWeight, userHeight.toDouble())
 
     Box(
         modifier = Modifier
@@ -104,7 +109,7 @@ fun BMIResultScreen(controleDeNavegacao: NavHostController?) {
                         shape = CircleShape,
                         border = BorderStroke(
                             width = 4.dp,
-                            color = Color(0xFFFF9800)
+                            color = resultBmi.color
                         )
                     ) {
                         Column(
@@ -113,15 +118,16 @@ fun BMIResultScreen(controleDeNavegacao: NavHostController?) {
                             modifier = Modifier
                                 .fillMaxSize()
                         ) {
+                            val bmiValue = resultBmi.bmiValues.second
                             Text(
-                                text = "30,6",
+                                text = String.format(Locale.getDefault(), "%.1f", bmiValue),
                                 fontSize = 48.sp,
                                 fontWeight = FontWeight.Bold
                             )
                         }
                     }
                     Text(
-                        text = "Your have Class I Obesity.",
+                        text = resultBmi.bmiValues.first,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier
@@ -197,12 +203,30 @@ fun BMIResultScreen(controleDeNavegacao: NavHostController?) {
                     Column(
                         modifier = Modifier
                             .padding(top = 16.dp, bottom = 16.dp)
-                            .background(
-                                Color.LightGray
-                            )
                             .fillMaxWidth()
                             .height(250.dp)
-                    ) {  }
+                    ) {
+                        BmiLevels(
+                            leftText = "Alguma coisa",
+                            rightText = "Outro texto"
+                        )
+                        BmiLevels(
+                            leftText = "Alguma coisa",
+                            rightText = "Outro texto"
+                        )
+                        BmiLevels(
+                            leftText = "Alguma coisa",
+                            rightText = "Outro texto"
+                        )
+                        BmiLevels(
+                            leftText = "Alguma coisa",
+                            rightText = "Outro texto"
+                        )
+                        BmiLevels(
+                            leftText = "Alguma coisa",
+                            rightText = "Outro texto"
+                        )
+                    }
                     HorizontalDivider()
                     Button(
                         onClick = {
